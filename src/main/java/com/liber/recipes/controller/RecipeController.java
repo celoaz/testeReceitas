@@ -25,8 +25,12 @@ public class RecipeController {
     private static final Integer UPDATE = 3;
     private static final Integer DELETE = 4;
 
-    @Autowired
     protected RecipeHandler recipeHandler;
+
+    @Autowired
+    public RecipeController(RecipeHandler recipeHandler) {
+        this.recipeHandler = recipeHandler;
+    }
 
     @RequestMapping(path = "/create", method = RequestMethod.POST)
     public ResponseEntity<String> createRecipe(@RequestBody String body) {
@@ -72,7 +76,7 @@ public class RecipeController {
         return new ResponseEntity<String>(LiberUtils.getObjectJson(recipeResponse), HttpStatus.OK);
     }
 
-    @RequestMapping(path = "/delete", method = RequestMethod.GET)
+    @RequestMapping(path = "/delete", method = RequestMethod.DELETE)
     public ResponseEntity<String> deleteRecipe(@RequestParam String param) {
         RecipeResponse recipeResponse;
         try {

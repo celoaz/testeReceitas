@@ -2,6 +2,8 @@ package com.liber.recipes.business;
 
 public class RecipeMetadata {
 
+    // This class represents the metadata present on a recipe. It has methods to get and set attributes and a constructor.
+
     private Integer preparationTimeInMinutes;
     private Integer numberOfServings;
     private String additionalNotes;

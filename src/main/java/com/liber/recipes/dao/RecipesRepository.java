@@ -29,6 +29,10 @@ public class RecipesRepository {
     }
 
     public void insertRecipes(Recipe recipe) {
+        /*
+            This method inserts a recipe into the database. It calls the next method, insert ingredients, which will add
+            the ingredients of a given recipe on the database.
+         */
         this.dslContext.insertInto(
                 Recipes.RECIPES).columns(
                 Recipes.RECIPES.RECIPE_NAME,
@@ -38,6 +42,10 @@ public class RecipesRepository {
     }
 
     public void insertIngredients(Recipe recipe) {
+        /*
+            This method inserts ingredients into the database. It calls the next method, insert metadata, which will add
+            the metadata of a given recipe on the database.
+         */
         for (String ingredient : recipe.getIngredients()) {
             this.dslContext.insertInto(
                     Ingredients.INGREDIENTS).columns(
@@ -49,6 +57,10 @@ public class RecipesRepository {
     }
 
     public void insertMetadata(Recipe recipe) {
+        /*
+            This method inserts metadata into the database. It calls the next method, insert categories, which will add
+            the categories of a given recipe on the database.
+         */
         com.liber.recipes.business.RecipeMetadata recipeMetadata = recipe.getMetadata();
 
         this.dslContext.insertInto(
@@ -64,6 +76,10 @@ public class RecipesRepository {
     }
 
     public void insertCategories(Recipe recipe) {
+        /*
+            This method inserts categories into the database. This is the final method that is called on an insert process.
+            After that, the code returns an OK message to the user.
+         */
         for(String category : recipe.getCategories()) {
             this.dslContext.insertInto(
                     Categories.CATEGORIES).columns(
@@ -74,9 +90,11 @@ public class RecipesRepository {
     }
 
     public List<Recipe> recoverRecipes(String param) {
-        final Result<RecipesRecord> recipesRecords;
-        final Result<RecipesRecord> recipesRecordsForIngredients;
-        final Result<RecipesRecord> recipesRecordsForCategories;
+        /*
+            This method recovers recipes from the database, given a parameter. It will look into recipe names,
+            ingredients and categories. It will bring all recipes matching "param".
+         */
+
         final Result<IngredientsRecord> ingredientsRecords;
         final Result<CategoriesRecord> categoriesRecords;
         List<Recipe> recipes;
@@ -84,6 +102,7 @@ public class RecipesRepository {
         //Check if the param is a recipe name
         recipes = getByName(param);
 
+        //Check if the param is an ingredient
         ingredientsRecords = this.dslContext.select(Ingredients.INGREDIENTS.RECIPE_NAME).from(Ingredients.INGREDIENTS)
                                             .where(Ingredients.INGREDIENTS.INGREDIENT.contains(param))
                                             .fetchInto(Ingredients.INGREDIENTS);
@@ -95,6 +114,7 @@ public class RecipesRepository {
             }
         }
 
+        //Check if the param is a category
         categoriesRecords = this.dslContext.select(Categories.CATEGORIES.RECIPE_NAME).from(Categories.CATEGORIES)
                                             .where(Categories.CATEGORIES.CATEGORY_NAME.contains(param))
                                             .fetchInto(Categories.CATEGORIES);
@@ -111,6 +131,11 @@ public class RecipesRepository {
     }
 
     public List<Recipe> getByName(String name) {
+
+        /*
+            This method returns a list with all recipes matching a criteria (name).
+         */
+
         List<Recipe> recipeList = new ArrayList<>();
 
         Result<RecipesRecord> recipesRecord =  this.dslContext.select(Recipes.RECIPES.fields()).from(Recipes.RECIPES)
@@ -159,6 +184,7 @@ public class RecipesRepository {
     }
 
     public void updateRecipes(Recipe recipe) {
+        // This method checks if a recipe is present on a database. If so, it will deletes it and updates with the new payload
         List<Recipe> recipeList = recoverRecipes(recipe.getName());
         if(recipeList != null) {
             deleteRecipes(recipe.getName());
@@ -167,6 +193,9 @@ public class RecipesRepository {
     }
 
     public void deleteRecipes(String recipeName) {
+
+        // This method deletes a recipe on the database.
+
         this.dslContext.delete(Ingredients.INGREDIENTS)
                 .where(Ingredients.INGREDIENTS.RECIPE_NAME.eq(recipeName))
                 .execute();

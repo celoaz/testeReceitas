@@ -13,6 +13,10 @@ import java.util.List;
 @Service
 public class RecipeHandler {
 
+    /*
+        This class has basic methods to access the repository class
+     */
+
     protected RecipesRepository recipesRepository;
 
     @Autowired
@@ -42,7 +46,8 @@ public class RecipeHandler {
         recipesRepository.updateRecipes(recipe);
     }
 
-    public static void deleteFromDB(String param){
+    public void deleteFromDB(String recipeName){
+        recipesRepository.deleteRecipes(recipeName);
     }
 
 }

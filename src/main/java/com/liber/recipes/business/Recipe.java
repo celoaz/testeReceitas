@@ -4,6 +4,8 @@ import java.util.List;
 
 public class Recipe {
 
+    // This class represents the recipe itself. It has methods to get and set attributes and a constructor.
+
     private String name;
     private List<String> ingredients;
     private String preparationMethod;

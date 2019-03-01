@@ -4,6 +4,8 @@ public class RecipeResponse {
     private Integer statusCode;
     private String description;
 
+    // This class represents the return of a created recipe. It has methods to get and set attributes and a constructor.
+
     public RecipeResponse(Integer statusCode, String description) {
         this.statusCode = statusCode;
         this.description = description;

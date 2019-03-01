@@ -16,6 +16,7 @@ public class LiberUtils {
     private static final Integer DELETE = 4;
 
     public static Recipe getRequestObject(String requestJson) throws IOException {
+        // This method gets an string and converts it to a Recipe object
         final ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         final Recipe recipeRequest = mapper.readValue(requestJson, Recipe.class);
@@ -24,7 +25,7 @@ public class LiberUtils {
     }
 
     public static String getObjectJson(Object o) {
-
+        // This method gets an object and converts it to a String object
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
@@ -41,6 +42,7 @@ public class LiberUtils {
     }
 
     public static RecipeResponse buildResponseObject(Boolean isError, Integer requestType) {
+        // This method builds the Response object based on the endpoint used to access the system
         RecipeResponse recipeResponse = new RecipeResponse();
         if(requestType == CREATION) {
             if (isError) {
